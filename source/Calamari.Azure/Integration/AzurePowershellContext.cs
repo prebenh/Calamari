@@ -33,9 +33,8 @@ namespace Calamari.Azure.Integration
         }
 
         public CommandResult ExecuteScript(IScriptEngine scriptEngine, Script script, CalamariVariableDictionary variables, ICommandLineRunner commandLineRunner)
-        {
-            var workingDirectory = Path.GetDirectoryName(script.File);
-            variables.Set("OctopusAzureTargetScript", "\"" + script.File + "\"");
+        {            
+            variables.Set("OctopusAzureTargetScript", $"\"{script.File}\"");
             variables.Set("OctopusAzureTargetScriptParameters", script.Parameters);
 
             SetAzureModulesLoadingMethod(variables);
@@ -49,6 +48,7 @@ namespace Calamari.Azure.Integration
             }
             SetOutputVariable("OctopusAzureEnvironment", azureEnvironment, variables);
 
+            var workingDirectory = Path.GetDirectoryName(script.File);
             using (new TemporaryFile(Path.Combine(workingDirectory, "AzureProfile.json")))
             using (var contextScriptFile = new TemporaryFile(CreateContextScriptFile(workingDirectory)))
             {
