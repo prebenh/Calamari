@@ -11,9 +11,15 @@ using NUnit.Framework;
 namespace Calamari.Tests.Kubernetes
 {
     [TestFixture]
-    [Ignore("Need creds in Envs")]
     public class KubernetesScriptEngineFixture
     {
+        const string ClusterTokenEnvironmentVariable = "OCTOPUS_K8S_TOKEN";
+        const string CluserServerEnvironmentVariable = "OCTOPUS_K8S_SERVER";
+
+        //See "GitHub Test Account"
+        private static readonly string ClusterUri = Environment.GetEnvironmentVariable(CluserServerEnvironmentVariable);
+        static readonly string ClusterToken = Environment.GetEnvironmentVariable(ClusterTokenEnvironmentVariable);
+        
         [Test]
         [Category(TestEnvironment.CompatibleOS.Windows)]
         public void PowershellKubeCtlScripts()
@@ -37,9 +43,8 @@ namespace Calamari.Tests.Kubernetes
                 File.WriteAllText(temp.FilePath, "kubectl get nodes");
                 var output = ExecuteScript(scriptEngine, temp.FilePath, new CalamariVariableDictionary()
                 {
-                    ["OctopusKubernetesServer"] = "ASKROB",
-                    ["OctopusKubernetesUsername"] = "ASKROB",
-                    ["OctopusKubernetesPassword"] = "ASKROB",
+                    ["OctopusKubernetesServer"] =  ClusterUri,
+                    ["OctopusKubernetesToken"] = ClusterToken,
                     ["OctopusKubernetesInsecure"] = "true"
                     
                 });

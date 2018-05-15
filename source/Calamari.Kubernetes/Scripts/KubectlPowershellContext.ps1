@@ -12,12 +12,15 @@
 ##   $OctopusKubernetesToken = "..."
 ##   $OctopusKubernetesUsername = "..."
 ##   $OctopusKubernetesPassword = "..."
+##  $OctopusKubernetesNamespace
 ##   $OctopusKubernetesKubeCtlConfig = ".."
 
 function SetupContext {
     if($OctopusKubernetesToken -ne $null) {
+        Write-Verbose "Creating kubectl context to $OctopusKubernetesServer using Token"
         kubectl config set-credentials octouser --token=$OctopusKubernetesToken
     } else {
+        Write-Verbose "Creating kubectl context to $OctopusKubernetesServer using Username $OctopusKubernetesUsername"
         kubectl config set-credentials octouser --username=$OctopusKubernetesUsername --password=$OctopusKubernetesPassword
     }
     if($OctopusKubernetesInsecure -eq $null) {
