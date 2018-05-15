@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Calamari.Tests.Kubernetes
 {
     [TestFixture]
+    [Ignore("Not yet ready for the big time")]
     public class KubernetesScriptEngineFixture
     {
         const string ClusterTokenEnvironmentVariable = "OCTOPUS_K8S_TOKEN";
